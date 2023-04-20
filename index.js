@@ -26,8 +26,11 @@ Use getFinals to do the following:
 💡 HINT - you should be looking at the stage key inside of the objects
 */
 
-function getFinals(/* code here */) {
-    /* code here */
+function getFinals(arrFifa) {
+    const finals = arrFifa.filter(function(fifa) {
+        return fifa.Stage === 'Final';
+    })
+    return finals
  }
 
 
@@ -38,10 +41,10 @@ Use the higher-order function called getYears to do the following:
 2. Receive a callback function as the second parameter that will take getFinals from task 2 as an argument
 3. Return an array called years containing all of the years in the getFinals data set*/
 
-function getYears(/* code here */) {
-    /* code here */
+function getYears(arrFifa, callback) {
+    return callback(arrFifa).map(item => item.Year);
 }
-
+console.log(getYears(fifaData, getFinals));
 
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 4: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
@@ -52,9 +55,11 @@ Use the higher-order function getWinners to do the following:
 💡 HINT: Don't worry about ties for now (Please see the README file for info on ties for a stretch goal.)
 4. Returns the names of all winning countries in an array called `winners` */ 
 
-function getWinners(/* code here */) {
-    /* code here */
-}
+function getWinners(arrFifa, callback) {
+    const winners = callback(arrFifa).map(data => data[`Home Team Goals`] > data[`Away Team Goals`] ? data[`Home Team Name`] : data[`Away Team Name`]);
+    return winners
+
+} // from video
 
 
 
@@ -69,10 +74,17 @@ Use the higher-order function getWinnersByYear to do the following:
 💡 HINT: the strings returned need to exactly match the string in step 4.
  */
 
-function getWinnersByYear(/* code here */) {
-    /* code here */
+function getWinnersByYear(arrFifa, callbackFinals, callbackYears, callbackWinners) {
+    const winners = callbackWinners(arrFifa, getFinals);
+    const years = callbackYears(arrFifa, getFinals);
+    //const Finals = callbackFinals(arrFifa, getFinals);
+    //const AoS = 
+    return winners.map((item, index) => `In ${years[index]}, ${item} won the world cup!`);
+    
+    //return AoS
+    
 }
-
+//why would you need the 2nd param?
 
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 6: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
@@ -89,8 +101,11 @@ Use the higher order function `getAverageGoals` to do the following:
  
 */
 
-function getAverageGoals(/* code here */) {
-    /* code here */
+function getAverageGoals(callback) {
+    const averageGoals = callback.reduce(function(accumulator, item){
+        return accumulator + item[`Home Team Goals`] + item[`Away Team Goals`];
+    }, 0)
+    return (averageGoals / callback.length).toFixed(2);
  }
 
 
